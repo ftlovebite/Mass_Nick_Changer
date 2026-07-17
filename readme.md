@@ -1,54 +1,168 @@
-# Renamer Bot
+# Light Renamer Bot
 
-A simple Discord bot that adds a prefix to all members' server nicknames.
+A lightweight Discord bot written in Python that bulk renames server members by adding a custom tag before their username.
+
+Example:
+
+Before:
+```
+Light
+John
+Emily
+```
+
+After:
+```
+FK | Light
+FK | John
+FK | Emily
+```
+
+---
+
+## Features
+
+- Bulk rename all members with one command
+- Custom tag entered when the bot starts
+- Skips bots automatically
+- Skips the server owner
+- Respects Discord role hierarchy
+- Built with Python using discord.py
+- Easy to run locally
+
+---
 
 ## Requirements
 
-- Python 3.10+
-- A Discord Bot
-- Administrator permission
-- "Manage Nicknames" permission
-- Server Members Intent enabled
+- Python 3.10 or newer
+- discord.py
 
-## Installation
-
-1. Install Python.
-2. Install dependencies:
+Install the required package:
 
 ```bash
-pip install -r requirements.txt
+pip install -U discord.py
 ```
 
-3. Create a `.env` file:
+---
 
-```env
-TOKEN=YOUR_BOT_TOKEN
-PREFIX=FK |
+## Setup
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/FK-Renamer-Bot.git
 ```
 
-4. Enable **Server Members Intent** in the Discord Developer Portal.
+### 2. Open the project folder
 
-5. Invite the bot with:
-- Manage Nicknames
-- Read Messages
-- Send Messages
+```bash
+cd FK-Renamer-Bot
+```
 
-6. Start the bot:
+### 3. Run the bot
 
 ```bash
 python bot.py
 ```
 
-## Usage
+---
+
+## Startup
+
+When the bot starts it will ask for:
+
+```
+Enter your Discord Bot Token:
+```
+
+Paste your bot token.
+
+Then:
+
+```
+Enter the tag (Example: FK):
+```
+
+Enter any tag you want.
+
+Example:
+
+```
+FK
+```
+
+The bot will then use:
+
+```
+FK | Username
+```
+
+---
+
+## Commands
+
+### Rename every member
 
 ```
 !renameall
 ```
 
-The bot will rename every member it has permission to manage.
+Example result:
 
-## Notes
+```
+Light
+```
 
-- The bot cannot rename the server owner.
-- The bot cannot rename members whose highest role is equal to or above the bot's highest role.
-- Discord nickname limit is 32 characters.
+becomes
+
+```
+FK | Light
+```
+
+---
+
+## Required Permissions
+
+The bot needs:
+
+- Manage Nicknames
+- Read Messages
+- Send Messages
+
+The bot's role must be above the members it should rename.
+
+---
+
+## Required Intents
+
+Enable these in the Discord Developer Portal:
+
+- Server Members Intent
+- Message Content Intent
+
+---
+
+## Limitations
+
+The bot cannot rename:
+
+- The server owner
+- Members with roles higher than or equal to the bot's role
+- Members whose nicknames Discord does not allow the bot to edit
+
+---
+
+## Built With
+
+- Python
+- discord.py
+
+---
+
+## License
+
+All Rights Reserved.
+
+Copyright © 2026 Light.
+
+This project may not be copied, modified, redistributed, or used without explicit permission from the copyright holder.
