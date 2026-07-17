@@ -2,16 +2,22 @@ import discord
 from discord.ext import commands
 
 # ==============================
-# CONFIGURATION
+# USER INPUT
 # ==============================
 
 TOKEN = input("Enter your Discord Bot Token: ").strip()
 
 if not TOKEN:
-    print("Bot token cannot be empty.")
+    print("Bot token cannot be empty!")
     exit()
 
-TAG = "FK | "   # Change this if you ever want another tag
+TAG = input("Enter the tag (Example: FK): ").strip()
+
+if not TAG:
+    print("Tag cannot be empty!")
+    exit()
+
+PREFIX = f"{TAG} | "
 
 # ==============================
 # BOT SETUP
@@ -34,40 +40,40 @@ bot = commands.Bot(
 @bot.event
 async def on_ready():
     print("=" * 40)
-    print(f"Logged in as: {bot.user}")
-    print(f"Servers: {len(bot.guilds)}")
+    print(f"Logged in as {bot.user}")
+    print(f"Using Tag: {PREFIX}")
     print("Bot is Online!")
     print("=" * 40)
 
 # ==============================
-# HELP COMMAND
+# HELP
 # ==============================
 
 @bot.command()
 async def help(ctx):
     embed = discord.Embed(
-        title="FK Renamer Bot",
-        description="Bulk nickname renamer.",
+        title="Nickname Renamer",
+        description="Bulk renames every member.",
         color=0x5865F2
     )
 
     embed.add_field(
         name="Command",
-        value="`!renameall` - Rename everyone to `FK | Username`",
+        value="`!renameall`",
         inline=False
     )
 
     await ctx.send(embed=embed)
 
 # ==============================
-# RENAME COMMAND
+# RENAME ALL
 # ==============================
 
 @bot.command()
 @commands.has_permissions(administrator=True)
 async def renameall(ctx):
 
-    await ctx.send("Starting nickname update...")
+    await ctx.send(f"Renaming everyone to `{PREFIX}Username`...")
 
     success = 0
     failed = 0
@@ -87,13 +93,13 @@ async def renameall(ctx):
             failed += 1
             continue
 
-        new_name = f"{TAG}{member.name}"
+        nickname = f"{PREFIX}{member.name}"
 
-        if len(new_name) > 32:
-            new_name = new_name[:32]
+        if len(nickname) > 32:
+            nickname = nickname[:32]
 
         try:
-            await member.edit(nick=new_name)
+            await member.edit(nick=nickname)
             success += 1
 
         except Exception as e:
@@ -101,25 +107,23 @@ async def renameall(ctx):
             failed += 1
 
     embed = discord.Embed(
-        title="Rename Complete",
+        title="Rename Finished",
         color=0x57F287
     )
 
-    embed.add_field(name="Renamed", value=str(success))
-    embed.add_field(name="Failed", value=str(failed))
+    embed.add_field(name="Renamed", value=success)
+    embed.add_field(name="Failed", value=failed)
 
     await ctx.send(embed=embed)
 
 # ==============================
-# ERROR HANDLING
+# ERRORS
 # ==============================
 
 @renameall.error
 async def rename_error(ctx, error):
-
     if isinstance(error, commands.MissingPermissions):
-        await ctx.send("You must be an Administrator to use this command.")
-
+        await ctx.send("Administrator permission required.")
     else:
         await ctx.send(f"Error: {error}")
 
@@ -131,7 +135,7 @@ try:
     bot.run(TOKEN)
 
 except discord.LoginFailure:
-    print("Invalid Bot Token.")
+    print("Invalid bot token.")
 
 except Exception as e:
     print(e)
