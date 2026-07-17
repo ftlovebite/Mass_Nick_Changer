@@ -56,7 +56,7 @@ git clone https://github.com/YOUR_USERNAME/FK-Renamer-Bot.git
 ### 2. Open the project folder
 
 ```bash
-cd FK-Renamer-Bot
+cd Light-Renamer-Bot
 ```
 
 ### 3. Run the bot
