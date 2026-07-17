@@ -1,4 +1,4 @@
-# FK Renamer Bot
+# Renamer Bot
 
 A simple Discord bot that adds a prefix to all members' server nicknames.
 
